@@ -3,13 +3,8 @@
 {% block title %}Products | Flipkart Clone{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <p class="eyebrow">Curated Collection</p>
-    <h1>Simple shopping, clean presentation.</h1>
-    <p class="hero-copy">Browse products with a minimal layout focused on images, pricing, and quick scanning.</p>
-</section>
-
-<section class="product-grid">
+<section class="storefront">
+    <div class="product-grid">
     {% for product in products %}
     <article class="product-card">
         <a class="product-link" href="{% url 'products:product_detail' product.pk %}">
@@ -21,12 +16,32 @@
                 {% endif %}
             </div>
             <div class="product-card-body">
-                <p class="product-category">{{ product.category.name }}</p>
                 <h2>{{ product.name }}</h2>
-                <p class="product-brand">{{ product.brand }}</p>
                 <p class="product-price">Rs. {{ product.price }}</p>
             </div>
         </a>
+        <div class="product-card-actions">
+            <form method="post" action="{% url 'products:add_to_cart' product.pk %}">
+                {% csrf_token %}
+                <button class="card-action-button" type="submit">
+                    {% if user.is_authenticated %}
+                    Add to Cart
+                    {% else %}
+                    Login to add to cart
+                    {% endif %}
+                </button>
+            </form>
+            <form method="post" action="{% url 'products:like_product' product.pk %}">
+                {% csrf_token %}
+                <button class="card-action-button card-action-button-secondary" type="submit">
+                    {% if user.is_authenticated %}
+                    Like
+                    {% else %}
+                    Login to like
+                    {% endif %}
+                </button>
+            </form>
+        </div>
     </article>
     {% empty %}
     <div class="empty-state">
@@ -34,5 +49,6 @@
         <p>Add products from the Django admin to populate this catalog.</p>
     </div>
     {% endfor %}
+    </div>
 </section>
 {% endblock %}

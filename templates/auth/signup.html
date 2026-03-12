@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Signup | Flipkart Clone{% endblock %}
+
+{% block content %}
+<section class="auth-shell">
+    <div class="auth-card">
+        <p class="product-category">Create Account</p>
+        <h1>Signup</h1>
+        <p class="auth-copy">Create an account to access your dashboard and manage your shopping experience.</p>
+        <form class="auth-form" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <p class="field-help">{{ field.help_text|safe }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <button class="submit-button" type="submit">Create account</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
