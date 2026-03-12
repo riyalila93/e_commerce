@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Fashion Product Placeholder</title>
+  <desc id="desc">Minimal placeholder artwork for seeded ecommerce products.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4eadb" />
+      <stop offset="100%" stop-color="#e6d3bc" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)" />
+  <circle cx="400" cy="210" r="78" fill="#d96c3d" opacity="0.92" />
+  <path d="M270 470c18-108 80-162 130-162s112 54 130 162" fill="#ffffff" opacity="0.92" />
+  <path d="M245 500h310" stroke="#1d1d1b" stroke-opacity="0.18" stroke-width="18" stroke-linecap="round" />
+  <text x="400" y="545" text-anchor="middle" font-family="Georgia, serif" font-size="32" fill="#1d1d1b" fill-opacity="0.78">
+    Flipkart Fashion
+  </text>
+</svg>

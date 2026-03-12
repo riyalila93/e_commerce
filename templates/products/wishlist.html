@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Wishlist | Flipkart Clone{% endblock %}
+
+{% block content %}
+<section class="list-shell">
+    <div class="list-header">
+        <div>
+            <p class="product-category">Wishlist</p>
+            <h1>Saved products</h1>
+        </div>
+        <a class="back-link compact-back-link" href="{% url 'products:product_list' %}">&#8592; Browse products</a>
+    </div>
+
+    {% if wishlist_items %}
+    <div class="collection-list">
+        {% for item in wishlist_items %}
+        <article class="collection-card">
+            <div class="collection-content">
+                <p class="product-category">{{ item.product.category.name }}</p>
+                <h2>
+                    <a href="{% url 'products:product_detail' item.product.pk %}?next={{ request.get_full_path|urlencode }}">
+                        {{ item.product.name }}
+                    </a>
+                </h2>
+                <p class="product-brand">{{ item.product.brand }}</p>
+            </div>
+            <div class="collection-price">
+                <p class="product-price">Rs. {{ item.product.price }}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <h2>Your wishlist is empty</h2>
+        <p>Like products from the homepage to save them here.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
