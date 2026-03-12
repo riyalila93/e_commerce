@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Cart | Flipkart Clone{% endblock %}
+
+{% block content %}
+<section class="list-shell">
+    <div class="list-header">
+        <div>
+            <p class="product-category">Your Cart</p>
+            <h1>Shopping cart</h1>
+        </div>
+        <a class="back-link compact-back-link" href="{% url 'products:product_list' %}">&#8592; Continue shopping</a>
+    </div>
+
+    {% if cart_rows %}
+    <div class="collection-list">
+        {% for row in cart_rows %}
+        <article class="collection-card">
+            <div class="collection-image-wrap">
+                {% if row.item.product.display_image %}
+                <img class="collection-image" src="{{ row.item.product.display_image }}" alt="{{ row.item.product.name }}">
+                {% else %}
+                <div class="image-fallback">No image available</div>
+                {% endif %}
+            </div>
+            <div class="collection-content">
+                <h2>{{ row.item.product.name }}</h2>
+                <p class="product-brand">{{ row.item.product.brand }}</p>
+                <p class="product-category">Quantity: {{ row.item.quantity }}</p>
+            </div>
+            <div class="collection-price">
+                <p class="product-price">Rs. {{ row.item_total }}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    <div class="summary-card">
+        <p class="product-category">Cart Total</p>
+        <p class="detail-price">Rs. {{ cart_total }}</p>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <h2>Your cart is empty</h2>
+        <p>Add products from the homepage to see them here.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

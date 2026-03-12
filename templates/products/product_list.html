@@ -4,18 +4,30 @@
 
 {% block content %}
 <section class="storefront">
+    <nav class="category-nav" aria-label="Product categories">
+        <a class="category-pill {% if not active_category %}category-pill-active{% endif %}" href="{% url 'products:product_list' %}">All</a>
+        {% for category in categories %}
+        <a
+            class="category-pill {% if active_category and active_category.id == category.id %}category-pill-active{% endif %}"
+            href="{% url 'products:product_list' %}?category={{ category.name|urlencode }}"
+        >
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </nav>
     <div class="product-grid">
     {% for product in products %}
     <article class="product-card">
-        <a class="product-link" href="{% url 'products:product_detail' product.pk %}">
+        <a class="product-link" href="{% url 'products:product_detail' product.pk %}?next={{ request.get_full_path|urlencode }}">
             <div class="product-image-wrap">
-                {% if product.image %}
-                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% if product.display_image %}
+                <img class="product-image" src="{{ product.display_image }}" alt="{{ product.name }}">
                 {% else %}
                 <div class="image-fallback">No image available</div>
                 {% endif %}
             </div>
             <div class="product-card-body">
+                <p class="product-category">{{ product.category.name }}</p>
                 <h2>{{ product.name }}</h2>
                 <p class="product-price">Rs. {{ product.price }}</p>
             </div>
@@ -25,7 +37,11 @@
                 {% csrf_token %}
                 <button class="card-action-button" type="submit">
                     {% if user.is_authenticated %}
-                    Add to Cart
+                        {% if product.id in cart_product_ids %}
+                        Add Another
+                        {% else %}
+                        Add to Cart
+                        {% endif %}
                     {% else %}
                     Login to add to cart
                     {% endif %}
@@ -35,7 +51,11 @@
                 {% csrf_token %}
                 <button class="card-action-button card-action-button-secondary" type="submit">
                     {% if user.is_authenticated %}
-                    Like
+                        {% if product.id in wishlist_product_ids %}
+                        Liked
+                        {% else %}
+                        Like
+                        {% endif %}
                     {% else %}
                     Login to like
                     {% endif %}
@@ -46,7 +66,7 @@
     {% empty %}
     <div class="empty-state">
         <h2>No products available</h2>
-        <p>Add products from the Django admin to populate this catalog.</p>
+        <p>Try another category or add products from the Django admin.</p>
     </div>
     {% endfor %}
     </div>
