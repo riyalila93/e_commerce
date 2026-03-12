@@ -16,14 +16,8 @@
     <div class="collection-list">
         {% for row in cart_rows %}
         <article class="collection-card">
-            <div class="collection-image-wrap">
-                {% if row.item.product.display_image %}
-                <img class="collection-image" src="{{ row.item.product.display_image }}" alt="{{ row.item.product.name }}">
-                {% else %}
-                <div class="image-fallback">No image available</div>
-                {% endif %}
-            </div>
             <div class="collection-content">
+                <p class="product-category">{{ row.item.product.category.name }}</p>
                 <h2>{{ row.item.product.name }}</h2>
                 <p class="product-brand">{{ row.item.product.brand }}</p>
                 <p class="product-category">Quantity: {{ row.item.quantity }}</p>

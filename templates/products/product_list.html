@@ -19,13 +19,6 @@
     {% for product in products %}
     <article class="product-card">
         <a class="product-link" href="{% url 'products:product_detail' product.pk %}?next={{ request.get_full_path|urlencode }}">
-            <div class="product-image-wrap">
-                {% if product.display_image %}
-                <img class="product-image" src="{{ product.display_image }}" alt="{{ product.name }}">
-                {% else %}
-                <div class="image-fallback">No image available</div>
-                {% endif %}
-            </div>
             <div class="product-card-body">
                 <p class="product-category">{{ product.category.name }}</p>
                 <h2>{{ product.name }}</h2>

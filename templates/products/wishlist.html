@@ -16,16 +16,13 @@
     <div class="collection-list">
         {% for item in wishlist_items %}
         <article class="collection-card">
-            <a class="collection-image-wrap" href="{% url 'products:product_detail' item.product.pk %}?next={{ request.get_full_path|urlencode }}">
-                {% if item.product.display_image %}
-                <img class="collection-image" src="{{ item.product.display_image }}" alt="{{ item.product.name }}">
-                {% else %}
-                <div class="image-fallback">No image available</div>
-                {% endif %}
-            </a>
             <div class="collection-content">
                 <p class="product-category">{{ item.product.category.name }}</p>
-                <h2>{{ item.product.name }}</h2>
+                <h2>
+                    <a href="{% url 'products:product_detail' item.product.pk %}?next={{ request.get_full_path|urlencode }}">
+                        {{ item.product.name }}
+                    </a>
+                </h2>
                 <p class="product-brand">{{ item.product.brand }}</p>
             </div>
             <div class="collection-price">

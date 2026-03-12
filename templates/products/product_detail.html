@@ -6,14 +6,6 @@
 <a class="back-link" href="{{ next_url }}">&#8592; Back to products</a>
 
 <section class="detail-layout">
-    <div class="detail-image-panel">
-        {% if product.display_image %}
-        <img class="detail-image" src="{{ product.display_image }}" alt="{{ product.name }}">
-        {% else %}
-        <div class="image-fallback detail-fallback">No image available</div>
-        {% endif %}
-    </div>
-
     <div class="detail-content">
         <p class="product-category">{{ product.category.name }}</p>
         <h1>{{ product.name }}</h1>

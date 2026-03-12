@@ -8,8 +8,9 @@ from products.models import Category, Product
 PLACEHOLDER_IMAGE = "products/fashion-placeholder.svg"
 
 
-def unsplash_url(photo_id):
-    return f"https://unsplash.com/photos/{photo_id}/download?force=true&w=1200"
+def product_image_url(*terms):
+    query = ",".join(terms + ("product", "isolated", "plain-background"))
+    return f"https://source.unsplash.com/featured/?{query}"
 
 
 PRODUCTS = [
@@ -20,7 +21,7 @@ PRODUCTS = [
         "brand": "Urban Thread",
         "stock": 48,
         "category": "Men",
-        "image_url": unsplash_url("CKiRgZO0vQo"),
+        "image_url": product_image_url("tshirt"),
     },
     {
         "name": "Slim Fit Denim Jeans",
@@ -29,7 +30,7 @@ PRODUCTS = [
         "brand": "Blue Ridge",
         "stock": 30,
         "category": "Men",
-        "image_url": unsplash_url("btqQFG47URw"),
+        "image_url": product_image_url("jeans"),
     },
     {
         "name": "Casual Hoodie",
@@ -38,7 +39,7 @@ PRODUCTS = [
         "brand": "North Lane",
         "stock": 24,
         "category": "Men",
-        "image_url": unsplash_url("rtZNrTpbi5g"),
+        "image_url": product_image_url("hoodie"),
     },
     {
         "name": "Leather Jacket",
@@ -47,7 +48,7 @@ PRODUCTS = [
         "brand": "Rogue Studio",
         "stock": 12,
         "category": "Men",
-        "image_url": unsplash_url("fIkxrvBI2eU"),
+        "image_url": product_image_url("leather-jacket"),
     },
     {
         "name": "Denim Jacket",
@@ -56,7 +57,7 @@ PRODUCTS = [
         "brand": "Street Foundry",
         "stock": 21,
         "category": "Men",
-        "image_url": unsplash_url("cThejPg4qUQ"),
+        "image_url": product_image_url("denim-jacket"),
     },
     {
         "name": "Checked Flannel Shirt",
@@ -65,7 +66,7 @@ PRODUCTS = [
         "brand": "Timber & Co.",
         "stock": 27,
         "category": "Men",
-        "image_url": unsplash_url("w1i5pJGc6dY"),
+        "image_url": product_image_url("flannel-shirt"),
     },
     {
         "name": "Men's Bomber Jacket",
@@ -74,7 +75,7 @@ PRODUCTS = [
         "brand": "Aero Form",
         "stock": 15,
         "category": "Men",
-        "image_url": unsplash_url("ug3tOIPtTO8"),
+        "image_url": product_image_url("bomber-jacket"),
     },
     {
         "name": "Women's Summer Floral Dress",
@@ -83,7 +84,7 @@ PRODUCTS = [
         "brand": "Bloom & Co.",
         "stock": 22,
         "category": "Women",
-        "image_url": unsplash_url("KcERAQcCGmw"),
+        "image_url": product_image_url("dress", "floral"),
     },
     {
         "name": "High-Rise Pleated Skirt",
@@ -92,7 +93,7 @@ PRODUCTS = [
         "brand": "Grace Avenue",
         "stock": 18,
         "category": "Women",
-        "image_url": unsplash_url("rmdwE76Uif4"),
+        "image_url": product_image_url("skirt", "pleated"),
     },
     {
         "name": "Women's Linen Co-ord Set",
@@ -101,7 +102,7 @@ PRODUCTS = [
         "brand": "Mira Mode",
         "stock": 16,
         "category": "Women",
-        "image_url": unsplash_url("zkFGRW9CKww"),
+        "image_url": product_image_url("co-ord-set", "linen"),
     },
     {
         "name": "Ribbed Knit Cardigan",
@@ -110,7 +111,7 @@ PRODUCTS = [
         "brand": "Willow Wear",
         "stock": 20,
         "category": "Women",
-        "image_url": unsplash_url("0hbEGg_LeUY"),
+        "image_url": product_image_url("cardigan"),
     },
     {
         "name": "Women's Satin Blouse",
@@ -119,7 +120,7 @@ PRODUCTS = [
         "brand": "Luna Atelier",
         "stock": 19,
         "category": "Women",
-        "image_url": unsplash_url("BQ9b7sE9Kvk"),
+        "image_url": product_image_url("blouse", "satin"),
     },
     {
         "name": "Women's Wide-Leg Trousers",
@@ -128,7 +129,7 @@ PRODUCTS = [
         "brand": "Mira Mode",
         "stock": 23,
         "category": "Women",
-        "image_url": unsplash_url("s-4maxr-W78"),
+        "image_url": product_image_url("trousers", "wide-leg"),
     },
     {
         "name": "Women's Floral Maxi Dress",
@@ -137,7 +138,7 @@ PRODUCTS = [
         "brand": "Bloom & Co.",
         "stock": 14,
         "category": "Women",
-        "image_url": unsplash_url("mbAhuEaVXqg"),
+        "image_url": product_image_url("maxi-dress", "floral"),
     },
     {
         "name": "Women's Cropped Cardigan",
@@ -146,7 +147,7 @@ PRODUCTS = [
         "brand": "Softline",
         "stock": 17,
         "category": "Women",
-        "image_url": unsplash_url("Q5L794dp-Zg"),
+        "image_url": product_image_url("cropped-cardigan"),
     },
     {
         "name": "Women's Printed Kimono",
@@ -155,7 +156,7 @@ PRODUCTS = [
         "brand": "Rose Theory",
         "stock": 13,
         "category": "Women",
-        "image_url": unsplash_url("hj_ArSQQ0FI"),
+        "image_url": product_image_url("kimono"),
     },
     {
         "name": "Girls Floral Party Dress",
@@ -164,7 +165,7 @@ PRODUCTS = [
         "brand": "Little Bloom",
         "stock": 26,
         "category": "Kids",
-        "image_url": unsplash_url("COgVvJ_CG_I"),
+        "image_url": product_image_url("kids-dress", "floral"),
     },
     {
         "name": "Kids Graphic Sweatshirt",
@@ -173,7 +174,7 @@ PRODUCTS = [
         "brand": "Little Orbit",
         "stock": 26,
         "category": "Kids",
-        "image_url": unsplash_url("5oM8cOCQ8cQ"),
+        "image_url": product_image_url("kids-sweatshirt"),
     },
     {
         "name": "Boys Cargo Joggers",
@@ -182,7 +183,7 @@ PRODUCTS = [
         "brand": "Tiny Trek",
         "stock": 32,
         "category": "Kids",
-        "image_url": unsplash_url("5oM8cOCQ8cQ"),
+        "image_url": product_image_url("kids-joggers"),
     },
     {
         "name": "Kids Puffer Vest",
@@ -191,7 +192,7 @@ PRODUCTS = [
         "brand": "Trail Cubs",
         "stock": 18,
         "category": "Kids",
-        "image_url": unsplash_url("5oM8cOCQ8cQ"),
+        "image_url": product_image_url("kids-vest"),
     },
     {
         "name": "Girls Everyday Leggings",
@@ -200,7 +201,7 @@ PRODUCTS = [
         "brand": "Little Bloom",
         "stock": 34,
         "category": "Kids",
-        "image_url": unsplash_url("COgVvJ_CG_I"),
+        "image_url": product_image_url("kids-leggings"),
     },
     {
         "name": "Kids Printed T-Shirt",
@@ -209,7 +210,7 @@ PRODUCTS = [
         "brand": "Mini Street",
         "stock": 40,
         "category": "Kids",
-        "image_url": unsplash_url("COgVvJ_CG_I"),
+        "image_url": product_image_url("kids-tshirt"),
     },
     {
         "name": "Running Sneakers",
@@ -218,7 +219,7 @@ PRODUCTS = [
         "brand": "StrideX",
         "stock": 35,
         "category": "Shoes",
-        "image_url": unsplash_url("aFb6gwo9aT8"),
+        "image_url": product_image_url("sneakers"),
     },
     {
         "name": "Minimal White Trainers",
@@ -227,7 +228,7 @@ PRODUCTS = [
         "brand": "City Step",
         "stock": 28,
         "category": "Shoes",
-        "image_url": unsplash_url("HyfBIObAA4Y"),
+        "image_url": product_image_url("white-trainers"),
     },
     {
         "name": "Retro Basketball Shoes",
@@ -236,7 +237,7 @@ PRODUCTS = [
         "brand": "Jump Route",
         "stock": 18,
         "category": "Shoes",
-        "image_url": unsplash_url("rNaD91H95WY"),
+        "image_url": product_image_url("basketball-shoes"),
     },
     {
         "name": "Performance Training Shoes",
@@ -245,7 +246,7 @@ PRODUCTS = [
         "brand": "Motion Lab",
         "stock": 22,
         "category": "Shoes",
-        "image_url": unsplash_url("CEDkze7NIH0"),
+        "image_url": product_image_url("training-shoes"),
     },
     {
         "name": "Colorblock Sport Sneakers",
@@ -254,7 +255,7 @@ PRODUCTS = [
         "brand": "StrideX",
         "stock": 20,
         "category": "Shoes",
-        "image_url": unsplash_url("Ngxjs5fVBNc"),
+        "image_url": product_image_url("sport-sneakers"),
     },
     {
         "name": "Canvas Slip-On Shoes",
@@ -263,7 +264,7 @@ PRODUCTS = [
         "brand": "Harbor Mile",
         "stock": 29,
         "category": "Shoes",
-        "image_url": unsplash_url("HyfBIObAA4Y"),
+        "image_url": product_image_url("slip-on-shoes"),
     },
     {
         "name": "Classic Leather Belt",
@@ -272,7 +273,7 @@ PRODUCTS = [
         "brand": "Craftline",
         "stock": 40,
         "category": "Accessories",
-        "image_url": unsplash_url("qbAl_t6ps2M"),
+        "image_url": product_image_url("belt"),
     },
     {
         "name": "Structured Tote Bag",
@@ -281,7 +282,7 @@ PRODUCTS = [
         "brand": "Aster Atelier",
         "stock": 14,
         "category": "Accessories",
-        "image_url": unsplash_url("A3CTF4T_erU"),
+        "image_url": product_image_url("handbag", "tote"),
     },
     {
         "name": "Canvas Shopper Bag",
@@ -290,7 +291,7 @@ PRODUCTS = [
         "brand": "Carry Theory",
         "stock": 25,
         "category": "Accessories",
-        "image_url": unsplash_url("PENodSVsL1s"),
+        "image_url": product_image_url("shopper-bag"),
     },
     {
         "name": "Leather Crossbody Bag",
@@ -299,7 +300,7 @@ PRODUCTS = [
         "brand": "Aster Atelier",
         "stock": 11,
         "category": "Accessories",
-        "image_url": unsplash_url("EQzfTYsFr2M"),
+        "image_url": product_image_url("crossbody-bag"),
     },
     {
         "name": "Macrame Tote Bag",
@@ -308,7 +309,7 @@ PRODUCTS = [
         "brand": "Solea Studio",
         "stock": 16,
         "category": "Accessories",
-        "image_url": unsplash_url("ddNtzPcgfr8"),
+        "image_url": product_image_url("macrame-bag"),
     },
     {
         "name": "Round Dial Watch",
@@ -317,7 +318,7 @@ PRODUCTS = [
         "brand": "Hourmark",
         "stock": 19,
         "category": "Accessories",
-        "image_url": unsplash_url("qbAl_t6ps2M"),
+        "image_url": product_image_url("watch"),
     },
     {
         "name": "Colorblock Tote Collection",
@@ -326,7 +327,7 @@ PRODUCTS = [
         "brand": "Carry Theory",
         "stock": 17,
         "category": "Accessories",
-        "image_url": unsplash_url("XXLfSKryuYE"),
+        "image_url": product_image_url("tote-bag"),
     },
 ]
 
