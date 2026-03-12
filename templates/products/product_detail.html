@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | Flipkart Clone{% endblock %}
+
+{% block content %}
+<a class="back-link" href="{% url 'products:product_list' %}">Back to products</a>
+
+<section class="detail-layout">
+    <div class="detail-image-panel">
+        {% if product.image %}
+        <img class="detail-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+        <div class="image-fallback detail-fallback">No image available</div>
+        {% endif %}
+    </div>
+
+    <div class="detail-content">
+        <p class="product-category">{{ product.category.name }}</p>
+        <h1>{{ product.name }}</h1>
+        <p class="product-brand">{{ product.brand }}</p>
+        <p class="detail-price">Rs. {{ product.price }}</p>
+        <p class="detail-stock">
+            {% if product.stock > 0 %}
+            In stock: {{ product.stock }}
+            {% else %}
+            Out of stock
+            {% endif %}
+        </p>
+        <div class="detail-description">
+            <h2>Description</h2>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

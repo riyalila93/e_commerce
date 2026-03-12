@@ -35,5 +35,8 @@ TEMPLATES=[{
 }]
 WSGI_APPLICATION='flipkart_clone.wsgi.application'
 DATABASES={'default':{'ENGINE':'django.db.backends.sqlite3','NAME':BASE_DIR/'db.sqlite3'}}
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATIC_URL='/static/'
 STATICFILES_DIRS=[BASE_DIR/'static']
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

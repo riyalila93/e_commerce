@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Products | Flipkart Clone{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Curated Collection</p>
+    <h1>Simple shopping, clean presentation.</h1>
+    <p class="hero-copy">Browse products with a minimal layout focused on images, pricing, and quick scanning.</p>
+</section>
+
+<section class="product-grid">
+    {% for product in products %}
+    <article class="product-card">
+        <a class="product-link" href="{% url 'products:product_detail' product.pk %}">
+            <div class="product-image-wrap">
+                {% if product.image %}
+                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                <div class="image-fallback">No image available</div>
+                {% endif %}
+            </div>
+            <div class="product-card-body">
+                <p class="product-category">{{ product.category.name }}</p>
+                <h2>{{ product.name }}</h2>
+                <p class="product-brand">{{ product.brand }}</p>
+                <p class="product-price">Rs. {{ product.price }}</p>
+            </div>
+        </a>
+    </article>
+    {% empty %}
+    <div class="empty-state">
+        <h2>No products available</h2>
+        <p>Add products from the Django admin to populate this catalog.</p>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}
