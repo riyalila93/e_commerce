@@ -1,42 +1,120 @@
 {% extends "base.html" %}
 
-{% block title %}Cart | Flipkart Clone{% endblock %}
+{% block title %}Your Cart | Flipkart Clone{% endblock %}
 
 {% block content %}
-<section class="list-shell">
-    <div class="list-header">
-        <div>
-            <p class="product-category">Your Cart</p>
-            <h1>Shopping cart</h1>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mb-3">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">My Cart ({{ cart_rows|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if cart_rows %}
+                    {% for row in cart_rows %}
+                    <div class="row mb-4 cart-item-row" data-product-id="{{ row.item.product.id }}">
+                        <div class="col-md-3 text-center">
+                            <img src="{{ row.item.product.display_image }}" class="img-fluid" style="max-height: 120px; object-fit: contain;" alt="{{ row.item.product.name }}">
+                            <div class="mt-3 d-flex justify-content-center align-items-center">
+                                <button class="btn btn-sm btn-outline-secondary rounded-circle btn-quantity" data-action="decrease">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="mx-3 fw-bold item-quantity">{{ row.item.quantity }}</span>
+                                <button class="btn btn-sm btn-outline-secondary rounded-circle btn-quantity" data-action="increase">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>{{ row.item.product.name }}</h5>
+                            <p class="text-muted mb-1">{{ row.item.product.brand }}</p>
+                            <h4 class="text-dark">₹{{ row.item.product.price }}</h4>
+                            <form method="post" action="{% url 'products:remove_from_cart' row.item.product.id %}" class="mt-3">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none fw-bold">REMOVE</button>
+                            </form>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <p class="text-muted small mb-1">Subtotal</p>
+                            <h5 class="fw-bold item-total">₹{{ row.item_total }}</h5>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}<hr>{% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <img src="https://rukminim1.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90" alt="Empty Cart" style="width: 200px;">
+                        <h4 class="mt-4">Your cart is empty!</h4>
+                        <p class="text-muted">Add items to it now.</p>
+                        <a href="{% url 'products:product_list' %}" class="btn btn-primary px-5">Shop Now</a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-        <a class="back-link compact-back-link" href="{% url 'products:product_list' %}">&#8592; Continue shopping</a>
     </div>
-
+    
     {% if cart_rows %}
-    <div class="collection-list">
-        {% for row in cart_rows %}
-        <article class="collection-card">
-            <div class="collection-content">
-                <p class="product-category">{{ row.item.product.category.name }}</p>
-                <h2>{{ row.item.product.name }}</h2>
-                <p class="product-brand">{{ row.item.product.brand }}</p>
-                <p class="product-category">Quantity: {{ row.item.quantity }}</p>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 sticky-top" style="top: 80px;">
+            <div class="card-header bg-white py-3">
+                <h5 class="text-muted mb-0">PRICE DETAILS</h5>
             </div>
-            <div class="collection-price">
-                <p class="product-price">Rs. {{ row.item_total }}</p>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Price ({{ cart_rows|length }} items)</span>
+                    <span class="cart-total-display">₹{{ cart_total }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Delivery Charges</span>
+                    <span class="text-success">FREE</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-0">
+                    <h5 class="fw-bold">Total Amount</h5>
+                    <h5 class="fw-bold cart-total-display">₹{{ cart_total }}</h5>
+                </div>
             </div>
-        </article>
-        {% endfor %}
-    </div>
-    <div class="summary-card">
-        <p class="product-category">Cart Total</p>
-        <p class="detail-price">Rs. {{ cart_total }}</p>
-    </div>
-    {% else %}
-    <div class="empty-state">
-        <h2>Your cart is empty</h2>
-        <p>Add products from the homepage to see them here.</p>
+            <div class="card-footer bg-white border-0 py-3">
+                <button class="btn btn-warning w-100 btn-lg fw-bold text-white shadow-sm" style="background-color: #fb641b;">PLACE ORDER</button>
+            </div>
+        </div>
     </div>
     {% endif %}
-</section>
+</div>
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.btn-quantity').forEach(button => {
+    button.addEventListener('click', function() {
+        const row = this.closest('.cart-item-row');
+        const productId = row.dataset.productId;
+        const action = this.dataset.action;
+        
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        fetch(`/product/${productId}/update-cart-quantity/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: `action=${action}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'updated') {
+                row.querySelector('.item-quantity').textContent = data.quantity;
+                row.querySelector('.item-total').textContent = '₹' + data.item_total;
+                document.querySelectorAll('.cart-total-display').forEach(el => {
+                    el.textContent = '₹' + data.cart_total;
+                });
+            } else if (data.status === 'removed') {
+                row.remove();
+                location.reload(); // Simplest way to update the summary and check if cart is empty
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
 {% endblock %}

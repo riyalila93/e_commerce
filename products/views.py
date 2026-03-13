@@ -2,6 +2,8 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -25,6 +27,10 @@ def product_list(request):
     )
 
     products = Product.objects.select_related("category").order_by("name")
+    query = request.GET.get("q")
+    if query:
+        products = products.filter(Q(name__icontains=query) | Q(brand__icontains=query))
+
     active_category = None
     if category_name:
         active_category = next(
@@ -129,7 +135,47 @@ def add_to_cart(request, pk):
         cart_item.quantity += 1
         cart_item.save(update_fields=["quantity"])
     messages.success(request, f"{product.name} added to cart.")
-    return redirect("products:product_list")
+    return redirect(request.META.get("HTTP_REFERER", "products:cart"))
+
+
+@require_POST
+@login_required
+def remove_from_cart(request, pk):
+    cart_item = get_object_or_404(CartItem, user=request.user, product_id=pk)
+    product_name = cart_item.product.name
+    cart_item.delete()
+    messages.success(request, f"{product_name} removed from cart.")
+    return redirect("products:cart")
+
+
+@require_POST
+@login_required
+def update_cart_quantity(request, pk):
+    action = request.POST.get("action")
+    cart_item = get_object_or_404(CartItem, user=request.user, product_id=pk)
+
+    if action == "increase":
+        cart_item.quantity += 1
+    elif action == "decrease":
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+        else:
+            cart_item.delete()
+            return JsonResponse({"status": "removed"})
+
+    cart_item.save()
+    
+    # Calculate totals for dynamic update
+    item_total = cart_item.product.price * cart_item.quantity
+    cart_items = CartItem.objects.filter(user=request.user)
+    cart_total = sum(item.product.price * item.quantity for item in cart_items)
+    
+    return JsonResponse({
+        "status": "updated",
+        "quantity": cart_item.quantity,
+        "item_total": float(item_total),
+        "cart_total": float(cart_total)
+    })
 
 
 @require_POST
@@ -139,15 +185,27 @@ def like_product(request, pk):
         messages.info(request, f"Please log in to like {product.name}.")
         return redirect("login")
 
-    _, created = WishlistItem.objects.get_or_create(
+    wishlist_item, created = WishlistItem.objects.get_or_create(
         user=request.user,
         product=product,
     )
     if created:
-        messages.success(request, f"You liked {product.name}.")
+        messages.success(request, f"Added {product.name} to wishlist.")
     else:
-        messages.info(request, f"{product.name} is already in your wishlist.")
-    return redirect("products:product_list")
+        wishlist_item.delete()
+        messages.success(request, f"Removed {product.name} from wishlist.")
+    
+    return redirect(request.META.get("HTTP_REFERER", "products:product_list"))
+
+
+@require_POST
+@login_required
+def remove_from_wishlist(request, pk):
+    wishlist_item = get_object_or_404(WishlistItem, user=request.user, product_id=pk)
+    product_name = wishlist_item.product.name
+    wishlist_item.delete()
+    messages.success(request, f"{product_name} removed from wishlist.")
+    return redirect("products:wishlist")
 
 
 @login_required
