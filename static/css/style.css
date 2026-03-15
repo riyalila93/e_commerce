@@ -391,11 +391,15 @@ img {
 }
 
 .signup-submit-button {
-    background: #2874f0;
+    background: #2874f0 !important;
+    color: #fff !important;
+    border-color: #2874f0 !important;
 }
 
 .signup-submit-button:hover {
-    background: #1f5ec4;
+    background: #1f5ec4 !important;
+    color: #fff !important;
+    border-color: #1f5ec4 !important;
 }
 
 .list-shell {
