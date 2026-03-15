@@ -3,12 +3,12 @@
 {% block title %}Products | Flipkart Clone{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row g-4">
     <!-- Categories Sidebar -->
     <div class="col-md-2 d-none d-md-block">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-white fw-bold">Categories</div>
-            <div class="list-group list-group-flush">
+        <div class="card shadow-sm border-0 category-sidebar">
+            <div class="card-header bg-white fw-bold category-sidebar-header">Categories</div>
+            <div class="list-group list-group-flush category-list">
                 <a href="{% url 'products:product_list' %}" class="list-group-item list-group-item-action {% if not active_category %}active{% endif %}">All</a>
                 {% for category in categories %}
                 <a href="{% url 'products:product_list' %}?category={{ category.name|urlencode }}" 
@@ -23,7 +23,7 @@
     <!-- Product Grid -->
     <div class="col-md-10">
         {% if request.GET.q %}
-            <h5 class="mb-3">Showing results for "{{ request.GET.q }}"</h5>
+            <h5 class="mb-3 results-label">Showing results for "{{ request.GET.q }}"</h5>
         {% endif %}
         
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 text-center">
@@ -80,9 +80,4 @@
     </div>
 </div>
 
-<style>
-    .product-card { transition: transform 0.2s, box-shadow 0.2s; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
-    .list-group-item.active { background-color: #2874f0; border-color: #2874f0; }
-</style>
 {% endblock %}

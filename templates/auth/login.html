@@ -5,9 +5,9 @@
 {% block content %}
 <section class="auth-shell">
     <div class="auth-card">
-        <p class="product-category">Account Access</p>
+        <p class="auth-eyebrow">Account Access</p>
         <h1>Login</h1>
-        <p class="auth-copy">Sign in with your username and password to continue to your dashboard.</p>
+        <p class="auth-copy">Sign in with your username and password to continue shopping.</p>
         <form class="auth-form" method="post">
             {% csrf_token %}
             {% if form.non_field_errors %}
@@ -33,6 +33,7 @@
             </div>
             <button class="submit-button" type="submit">Login</button>
         </form>
+        <p class="auth-footer-copy">New here? <a href="{% url 'signup' %}">Create an account</a></p>
     </div>
 </section>
 {% endblock %}
