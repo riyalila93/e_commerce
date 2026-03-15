@@ -390,6 +390,14 @@ img {
     transform: translateY(-1px);
 }
 
+.signup-submit-button {
+    background: #2874f0;
+}
+
+.signup-submit-button:hover {
+    background: #1f5ec4;
+}
+
 .list-shell {
     padding: 2rem 0 4rem;
 }
