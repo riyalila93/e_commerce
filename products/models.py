@@ -26,13 +26,13 @@ class Product(models.Model):
 
     @property
     def display_image(self):
-        if self.image_url:
-            return self.image_url
         try:
             if self.image:
                 return self.image.url
         except ValueError:
-            return ""
+            pass
+        if self.image_url:
+            return self.image_url
         return ""
 
     def __str__(self):
